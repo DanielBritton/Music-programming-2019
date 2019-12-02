@@ -1,0 +1,61 @@
+/* Set height of body and the document to 100% to enable "full page tabs" */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial;
+}
+
+/* Style tab links */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: white;
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+
+.display {
+  color: black;
+  background-color: rgba(255,255,255,0.5);
+  font-size: 16;
+  padding: 20px;
+}
+
+.error {
+  color: red;
+  font-size: 12;
+  font-style: oblique;
+  padding-left: 50px;
+  padding-bottom: 10px;
+  visibility: hidden;
+}
+
+#searchResults{
+  background-color: rgba(47, 79, 79, 0.7);
+  color: white;
+  padding: 20px;
+  visibility: hidden;
+}
+
+#Search {
+  background-color: red;
+  background-image: url("images/guitar.jpg");
+}
+#Library {background-color: green;}
+#Explore {background-color: orange;}

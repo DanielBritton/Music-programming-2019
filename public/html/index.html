@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src='../js/scripts.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel='stylesheet' type="text/css" href='../css/styles.css'>
+</head>
+
+<body>
+    <button class="tablink" onclick="openPage('Search', this, 'red')" id="defaultOpen">Search</button>
+    <button class="tablink" onclick="openPage('Library', this, 'green')">Library</button>
+    <button class="tablink" onclick="openPage('Explore', this, 'orange')">Explore</button>
+
+    <div id="Search" class="tabcontent">
+        <h1>Search</h1>
+        <div class="display">
+            <p>
+                Search for your favourite music
+            </p>
+            <label>Search</label>
+            <input type="text" , name="search" id='inputVal'><button onclick="validateSearch()">GO</button> <br>
+            <div id="error" class="error">
+                <p color="red"> Please enter a valid Search</p>
+            </div>
+            <div id="searchResults">
+                <h2>Search Results</h2>
+                <p id='basicResults'>
+                    Some results.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="Library" class="tabcontent">
+        <h3>News</h3>
+        <p>Some news this fine day!</p>
+    </div>
+
+    <div id="Explore" class="tabcontent">
+        <h3>Explore</h3>
+        <p>Who we are and what we do.</p>
+    </div>
+</body>
+
+</html>
