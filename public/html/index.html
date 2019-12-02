@@ -8,9 +8,9 @@
 </head>
 
 <body>
-    <button class="tablink" onclick="openPage('Search', this, 'red')" id="defaultOpen">Search</button>
-    <button class="tablink" onclick="openPage('Library', this, 'green')">Library</button>
-    <button class="tablink" onclick="openPage('Explore', this, 'orange')">Explore</button>
+    <button class="tablink" onclick="openPage('Search', this, 'darkorange')" id="defaultOpen">Search</button>
+    <button class="tablink" onclick="openPage('Library', this, 'darkslategrey')">Library</button>
+    <button class="tablink" onclick="openPage('Explore', this, 'darkmagenta')">Explore</button>
 
     <div id="Search" class="tabcontent">
         <h1>Search</h1>
@@ -19,27 +19,66 @@
                 Search for your favourite music
             </p>
             <label>Search</label>
-            <input type="text" , name="search" id='inputVal'><button onclick="validateSearch()">GO</button> <br>
+            <input type="text" , name="search" placeholder="Search for songs, artists, albums or lyrics"
+                id='inputVal'><button onclick="validateSearch()">GO</button> <br>
+
             <div id="error" class="error">
                 <p color="red"> Please enter a valid Search</p>
             </div>
+
             <div id="searchResults">
                 <h2>Search Results</h2>
-                <p id='basicResults'>
-                    Some results.
-                </p>
+                <div id="res">
+                    <h3 id='trackHeader'>Songs</h3>
+                    <div id="trackResults"></div>
+                    <h3 id='artistHeader'>Artists</h3>
+                    <div id="artistResults"></div>
+                </div>
             </div>
+
         </div>
     </div>
 
     <div id="Library" class="tabcontent">
-        <h3>News</h3>
-        <p>Some news this fine day!</p>
+        <h3>Library</h3>
+        <div>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+
+        </div>
     </div>
 
     <div id="Explore" class="tabcontent">
         <h3>Explore</h3>
-        <p>Who we are and what we do.</p>
+        <div>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+            <p>Some news this fine day!</p>
+
+        </div>
     </div>
 </body>
 
