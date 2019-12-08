@@ -52,6 +52,16 @@ th {
 
 .add:hover {background-color: rgba(0, 0, 0, 0.7);}
 
+.lyrics{
+  background-color: rgba(47, 79, 79, 0.9);
+  color: white;
+  border: 2px solid #e7e7e7;
+  display: block;
+  margin: auto;
+}
+
+.lyrics:hover {background-color: rgba(0, 0, 0, 0.7);}
+
 .display {
   color: black;
   background-color: rgba(255,255,255,0.5);
@@ -78,6 +88,18 @@ th {
 
 .deleteButton:hover {background-color: rgba(255, 0, 0, 0.7);}
 
+.searchButton {
+  background-color: rgba(155, 148, 148, 0.4);
+  color: white;
+  border: 2px solid #e7e7e7;
+  /* display: block; */
+  margin: auto;
+  height: 40px;
+  margin-left: 2px;
+}
+
+.searchButton:hover {background-color: rgba(228, 179, 44, 0.7);}
+
 #searchResults{
   background-color: rgba(47, 79, 79, 0.7);
   color: white;
@@ -93,9 +115,14 @@ th {
   padding: 40px;
 }
 
-
+#SearchBox{
+    height: 30px;
+    width: 300px;
+    padding: 5px;
+}
 
 #exploreDisplay{
+  display: flex;
   height: 100%;
   background-color: rgba(32, 143, 216, 0.781);
   color: white;
@@ -104,6 +131,24 @@ th {
 
 #displayLib{
   min-width: 80%;
+}
+
+#exploreResults{
+  margin: 10px; 
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.5);
+  min-width: 77%; 
+  padding: 20px; 
+  height: 90%; 
+}
+
+#selector{
+  margin: 10px; 
+  display: inline-block;
+  width: 15%;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  max-height: 320px;  
 }
 
 #Search {
@@ -126,4 +171,75 @@ th {
   background-size: 100%;
   background-attachment: fixed; 
   min-height: 800px;
+}
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
 }

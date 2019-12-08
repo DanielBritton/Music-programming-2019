@@ -18,9 +18,8 @@
             <p>
                 Search for your favourite music
             </p>
-            <label>Search</label>
-            <input type="text" , name="search" placeholder="Search for songs, artists, albums or lyrics"
-                id='inputVal'><button onclick="validateSearch()">GO</button> <br>
+            <input type="text" , name="search" placeholder="  Search for songs, artists, albums or lyrics"
+                id='SearchBox'><button class="searchButton" onclick="validateSearch()">GO</button> <br>
 
             <div id="error" class="error">
                 <p color="red"> Please enter a valid Search</p>
@@ -31,8 +30,10 @@
                 <div id="res">
                     <h3 id='trackHeader'>Songs</h3>
                     <div id="trackResults"></div>
-                    <h3 id='artistHeader'>Artists</h3>
+                    <h3 id='artistHeader'>Artist Songs</h3>
                     <div id="artistResults"></div>
+                    <!-- <h3 id="artistsHeader">Artists</h3>
+                    <div id="artistsResults"></div> -->
                 </div>
             </div>
 
@@ -54,8 +55,12 @@
             <div class='display'>
                 <div id='exploreDisplay'>
                     <div id="selector">
+                        <h3>Charts</h3>
+                        <p>
+                            Search for 'track' and 'artist' charts by 'Country'
+                        </p>
                         <p>Country</p>
-                        <select>
+                        <select id='countrySelector'>
                             <option value="IE">Ireland</option>
                             <option value="UK">UK</option>
                             <option value="US">United States</option>
@@ -63,20 +68,45 @@
                             <option value="ES">Spain</option>
                             <option value="AU">Australia</option>
                         </select>
-
                         <p>Search By:</p>
-                        <select>
-                            <option value="IE">Track</option>
-                            <option value="UK">Artist</option>
+                        <select id='typeSelector'>
+                            <option value="track">Track</option>
+                            <option value="artist">Artist</option>
                         </select>
+                        </br>
+                        <br /><br /><button class='searchButton' style="float: right;"
+                            onclick="chartsSearchByCountry('exploreRes')">Search</button>
                     </div>
+
                     <div id="exploreResults">
-                        <p>Results</p>
+                        <h3>Results</h3>
+                        <div id="exploreRes"></div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Song lyrics</h2>
+            </div>
+            <div class="modal-body">
+            </div>
+            <!-- <div class="modal-footer">
+                <h3>Modal Footer</h3>
+            </div> -->
+        </div>
+
+    </div>
+
+
+
 </body>
 
 </html>
