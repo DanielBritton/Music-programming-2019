@@ -62,6 +62,17 @@ th {
 
 .lyrics:hover {background-color: rgba(0, 0, 0, 0.7);}
 
+.expandSongs{
+  background-color: rgba(47, 79, 79, 0.9);
+  color: white;
+  border: 2px solid #e7e7e7;
+  display: block;
+  margin: auto;
+}
+
+.expandSongs:hover {background-color: rgba(0, 0, 0, 0.7);}
+
+
 .display {
   color: black;
   background-color: rgba(255,255,255,0.5);
@@ -99,79 +110,6 @@ th {
 }
 
 .searchButton:hover {background-color: rgba(228, 179, 44, 0.7);}
-
-#searchResults{
-  background-color: rgba(47, 79, 79, 0.7);
-  color: white;
-  padding: 40px;
-  visibility: hidden;
-  height: 100%; 
-}
-
-#libraryDisplay{
-  height: 100%;
-  background-color: rgba(23, 11, 94, 0.781);
-  color: white;
-  padding: 40px;
-}
-
-#SearchBox{
-    height: 30px;
-    width: 300px;
-    padding: 5px;
-}
-
-#exploreDisplay{
-  display: flex;
-  height: 100%;
-  background-color: rgba(32, 143, 216, 0.781);
-  color: white;
-  padding: 40px;
-}
-
-#displayLib{
-  min-width: 80%;
-}
-
-#exploreResults{
-  margin: 10px; 
-  display: inline-block;
-  background-color: rgba(0, 0, 0, 0.5);
-  min-width: 77%; 
-  padding: 20px; 
-  height: 90%; 
-}
-
-#selector{
-  margin: 10px; 
-  display: inline-block;
-  width: 15%;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  max-height: 320px;  
-}
-
-#Search {
-  background-color: red;
-  background-image: url("images/guitar.jpg"); 
-  background-size: 100% 100%;
-  background-attachment: fixed; 
-  min-height: 800px;
-}
-#Library {
-  background-color: green;
-  background-image: url("images/piano.jpg");
-  background-size: 100% 100%;
-  background-attachment: fixed; 
-  min-height: 800px;
-}
-#Explore {
-  background-color: orange;
-  background-image: url("images/Mic.jpg");
-  background-size: 100%;
-  background-attachment: fixed; 
-  min-height: 800px;
-}
 
 
 /* The Modal (background) */
@@ -242,4 +180,105 @@ th {
   padding: 2px 16px;
   background-color: #5cb85c;
   color: white;
+}
+
+
+#searchResults{
+  background-color: rgba(47, 79, 79, 0.7);
+  color: white;
+  padding: 40px;
+  visibility: hidden;
+  height: 100%; 
+}
+
+#libraryDisplay{
+  height: 100%;
+  background-color: rgba(23, 11, 94, 0.781);
+  color: white;
+  padding: 40px;
+}
+
+#SearchBox{
+    height: 30px;
+    width: 300px;
+    padding: 5px;
+    padding-left: 10px;
+}
+
+#exploreDisplay{
+  display: flex;
+  height: 100%;
+  background-color: rgba(32, 143, 216, 0.781);
+  color: white;
+  padding: 20px;
+  padding-top: 40px;
+}
+
+#displayLib{
+  min-width: 80%;
+}
+
+#exploreResults{
+  margin: 10px; 
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* min-width: 77%;  */
+  width: 100%;
+  padding: 10px; 
+  padding-top: 20px;
+  height: 90%; 
+}
+
+#exploreRes{
+  display: inline-block;
+  width: 100%; 
+  margin-top: 62px;
+  /* max-width: 300px; */
+}
+
+#exploreSongs{
+  display: inline-block;
+  min-height: 90%; 
+  vertical-align: top;
+  padding: 20px;
+  padding-top: 0%;
+  max-width: 50%; 
+}
+
+#exploreResTitle{
+  display: none;
+  vertical-align: top;
+  visibility: hidden;
+  max-width: 50%; 
+}
+
+#selector{
+  margin: 10px; 
+  display: inline-block;
+  width: 15%;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  max-height: 350px;  
+}
+
+#Search {
+  background-color: red;
+  background-image: url("images/guitar.jpg"); 
+  background-size: 100% 100%;
+  background-attachment: fixed; 
+  min-height: 800px;
+}
+#Library {
+  background-color: green;
+  background-image: url("images/piano.jpg");
+  background-size: 100% 100%;
+  background-attachment: fixed; 
+  min-height: 800px;
+}
+#Explore {
+  background-color: orange;
+  background-image: url("images/Mic.jpg");
+  background-size: 100%;
+  background-attachment: fixed; 
+  min-height: 800px;
 }

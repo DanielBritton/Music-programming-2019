@@ -15,11 +15,12 @@
     <div id="Search" class="tabcontent">
         <h1>Search</h1>
         <div class="display">
-            <p>
-                Search for your favourite music
-            </p>
-            <input type="text" , name="search" placeholder="  Search for songs, artists, albums or lyrics"
-                id='SearchBox'><button class="searchButton" onclick="validateSearch()">GO</button> <br>
+            <h3 style="color: rgb(70, 67, 63);">
+                Search for your favourite music...
+            </h3>
+            <input type="text" name="search" autocomplete="off"
+                placeholder="Search for songs, artists, albums or lyrics" id='SearchBox'><button class="searchButton"
+                onclick="validateSearch()">GO</button> <br>
 
             <div id="error" class="error">
                 <p color="red"> Please enter a valid Search</p>
@@ -57,7 +58,7 @@
                     <div id="selector">
                         <h3>Charts</h3>
                         <p>
-                            Search for 'track' and 'artist' charts by 'Country'
+                            View the top searched <b>tracks</b> and <b>artists</b> by <b>country</b>
                         </p>
                         <p>Country</p>
                         <select id='countrySelector'>
@@ -81,6 +82,8 @@
                     <div id="exploreResults">
                         <h3>Results</h3>
                         <div id="exploreRes"></div>
+                        <!-- <div id="exploreResTitle"></div> -->
+                        <div id="exploreSongs"></div>
                     </div>
 
                 </div>

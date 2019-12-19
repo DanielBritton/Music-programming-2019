@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const path = require('path');
-const music = require('musicmatch')({ apikey: "802224f7ee4779fbc74a6ebaf2347221	" });
+// const path = require('path');
+// const music = require('musicmatch')({ apikey: "802224f7ee4779fbc74a6ebaf2347221	" });
 // var allowCrossDomain = function (req, res, next) {
 //     res.header('Access-Control-Allow-Origin', "*");
 //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');

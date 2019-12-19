@@ -42,6 +42,24 @@ function deleteSong(index) {
     displayLibrary()
 }
 
+function loadSongs() {
+    return JSON.parse(localStorage.getItem('library'))
+}
+
+function addToLibrary(song, id) {
+    var addAction = document.getElementById(id).parentElement
+    var temp
+    addAction.className = 'deleteCell'
+    document.getElementById(id).remove()
+    if (song.childNodes[0].className == 'rank') {
+        song = song.cloneNode(true)
+        song.childNodes[0].remove()
+    }
+    saveSong(song.outerHTML)
+    addAction.removeAttribute('class')
+    console.log("Adding Song: " + song.outerHTML)
+}
+
 function displayLibrary() {
     var header = "<tr><th>Song</th><th>Artist</th><th>Album</th><th>Lyrics</th><th>Delete</th></tr>"
     if (loadSongs() === null) {
@@ -58,10 +76,6 @@ function displayLibrary() {
             deleteButtons[i].innerHTML = "<button class = 'deleteButton' onclick = 'deleteSong(this.parentNode.parentNode.rowIndex)'>X</button>"
         }
     }
-}
-
-function loadSongs() {
-    return JSON.parse(localStorage.getItem('library'))
 }
 
 function validateSearch() {
@@ -174,30 +188,6 @@ function generalQuery(query) {
     })
 }
 
-// function artistRanking(query) {
-//     divName = "artistsResults"
-//     $.ajax({
-//         type: "GET",
-//         data: {
-//             apikey: "802224f7ee4779fbc74a6ebaf2347221",
-//             q_artist: query,
-//             page_size: 10,
-//             //s_artist_rating: "DESC",
-//             format: "jsonp",
-//             callback: "jsonp_callback"
-//         },
-//         url: "https://api.musixmatch.com/ws/1.1/artist.search",
-//         dataType: "jsonp",
-//         jsonpCallback: 'jsonp_callback',
-//         success: function (data) {
-//             console.log(data)
-//             data = data.message.body.track_list
-//             serveResultsTable(data, divName)
-//             document.getElementById(divName).style.visibility = 'visible'
-//         }
-//     })
-// }
-
 function artistChartsByCountry(countryValue, divName) {
     $.ajax({
         type: "GET",
@@ -245,14 +235,17 @@ function trackChartsByCountry(countryValue, divName) {
 }
 
 function chartsSearchByCountry(divName) {
+    document.getElementById('exploreSongs').style.visibility = 'hidden'
     var country = document.getElementById('countrySelector')
     var countryValue = country.options[country.selectedIndex].value
     var type = document.getElementById('typeSelector')
     var typeValue = type.options[type.selectedIndex].value
 
     if (typeValue == 'track') {
+        document.getElementById(divName).style.maxWidth = "800px"
         trackChartsByCountry(countryValue, divName)
     } else {
+        document.getElementById(divName).style.maxWidth = "300px"
         artistChartsByCountry(countryValue, divName)
     }
 }
@@ -273,22 +266,56 @@ function serveResultsTable(data, divName) {
     document.getElementById(divName).innerHTML = table
 }
 
-function serveArtistResultsTable(data, divName) {
-    var table = "<table><tr> <th><b>Rank</b></th> <th><b>Artist</b></th> </tr>"
+function serveSongResultsTable(artist, data, divName) {
+    var title = "<h4>Top tracks by \"" + artist.innerHTML + "\"</h4>"
+    var table = "<table><tr> <th>Rank</th> <th>Song</th> <th>Artist</th> <th>Album</th> <th>Lyrics</th> <th>Save</th> </tr>"
     for (i = 0; i < data.length; i++) {
         table +=
-            "<tr></tr>" +
-            "<tr " + "id=" + divName + i + "><td><b>" + (i + 1) + ".</b></td>" + "<td>" + data[i].artist.artist_name + "</td>" +
-            // "<td>" + data[i].track.artist_name + "</td>" +
-            // "<td>" + data[i].track.album_name + "</td>" +
-            // "<td>" + "<button class = 'add' id = b_" + divName + i + " onclick = addToLibrary(this.parentNode.parentNode,this.id)" + ">" + "+" + "</button>" + 
+            "<tr " + "id=" + data[i].track.track_id + ">" +
+            "<td class = 'rank'> <b>" + (i + 1) + ".</b> </td>" +
+            "<td>" + data[i].track.track_name + "</td>" +
+            "<td>" + data[i].track.artist_name + "</td>" +
+            "<td>" + data[i].track.album_name + "</td>" +
+            "<td>" + "<button class = 'lyrics'" + " onclick = getLyrics(this.parentElement.parentElement.id)" + ">" + "♪" + "</button>" + "</td>" +
+            "<td>" + "<button class = 'add' id = b_" + divName + i + " onclick = addToLibrary(this.parentNode.parentNode,this.id)" + ">" + "+" + "</button>" + "</td>";
+    };
+    table += "</table>";
+    console.log(table)
+    document.getElementById(divName).innerHTML = title + table
+}
 
-
-            "</td>";
+function serveArtistResultsTable(data, divName) {
+    var table = "<table><tr> <th><b>Rank</b></th> <th><b>Artist</b></th> <th>Songs</th> </tr>"
+    for (i = 0; i < data.length; i++) {
+        table +=
+            "<tr " + "id=" + data[i].artist.artist_id + "><td><b>" + (i + 1) + ".</b></td>" + "<td>" + data[i].artist.artist_name + "</td>" + "<td><button class='expandSongs' onclick='expandSongs(this.parentNode.parentNode.id,this.parentNode.parentNode.childNodes[1],\"exploreSongs\")'>♫</button></td>" + "</tr>";
     };
     table += "</table>";
     console.log(table)
     document.getElementById(divName).innerHTML = table
+}
+
+function expandSongs(id, artist, divName) {
+    $.ajax({
+        type: "GET",
+        data: {
+            apikey: "802224f7ee4779fbc74a6ebaf2347221",
+            f_artist_id: id,
+            s_track_rating: "DESC",
+            page_size: 10,
+            format: "jsonp",
+            callback: "jsonp_callback"
+        },
+        url: "https://api.musixmatch.com/ws/1.1/track.search",
+        dataType: "jsonp",
+        jsonpCallback: 'jsonp_callback',
+        success: function (data) {
+            console.log(data)
+            data = data.message.body.track_list
+            serveSongResultsTable(artist, data, divName)
+            document.getElementById(divName).style.visibility = 'visible'
+        }
+    })
 }
 
 function getLyrics(id) {
@@ -318,18 +345,6 @@ function getLyrics(id) {
     })
 }
 
-
-
-function addToLibrary(song, id) {
-    //song.removeAttribute('id')
-    var action = document.getElementById(id).parentElement
-    action.className = 'deleteCell'
-    document.getElementById(id).remove()
-    saveSong(song.outerHTML)
-    action.removeAttribute('class')
-    console.log("Adding Song: " + song.outerHTML)
-}
-
 function makeVisible(elmnt) {
     document.getElementById(elmnt).style.visibility = 'visible'
 }
@@ -337,8 +352,6 @@ function makeVisible(elmnt) {
 function makeInvisible(elmnt) {
     x = document.getElementById(elmnt).style.visibility = 'hidden'
 }
-
-
 
 function displayModal(lyrics) {
     // Get the modal
@@ -363,8 +376,25 @@ function displayModal(lyrics) {
     }
 }
 
+function enterToSearch() {
+    var input = document.getElementById("SearchBox");
+
+    // Execute a function when the user releases a key on the keyboard
+    input.addEventListener("keyup", function (event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementsByClassName("searchButton")[0].click();
+        }
+    });
+}
+
 // Get the element with id="defaultOpen" and click on it
 window.addEventListener('load', function () {
     document.getElementById("defaultOpen").click();
-    document.getElementsByClassName('searchButton')[1].click(); 
+    document.getElementsByClassName('searchButton')[1].click();
+    document.getElementById('SearchBox').focus();
+    enterToSearch()
 })
