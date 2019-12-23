@@ -29,8 +29,12 @@ function saveSong(row) {
         console.log('Creating new library...')
     } else {
         var library = JSON.parse(localStorage.getItem('library'))
-        library.push(row)
-        localStorage.setItem('library', JSON.stringify(library));
+        if (!library.includes(row)) {
+            library.push(row)
+            localStorage.setItem('library', JSON.stringify(library));
+        } else {
+            console.log("Library already contains selected song")
+        }
     }
 }
 
@@ -48,7 +52,6 @@ function loadSongs() {
 
 function addToLibrary(song, id) {
     var addAction = document.getElementById(id).parentElement
-    var temp
     addAction.className = 'deleteCell'
     document.getElementById(id).remove()
     if (song.childNodes[0].className == 'rank') {
@@ -61,7 +64,7 @@ function addToLibrary(song, id) {
 }
 
 function displayLibrary() {
-    var header = "<tr><th>Song</th><th>Artist</th><th>Album</th><th>Lyrics</th><th>Delete</th></tr>"
+    var header = "<tr><th>Song</th><th>Artist</th><th>Album</th><th>Play</th><th>Lyrics</th><th>Delete</th></tr>"
     if (loadSongs() === null) {
         var local = null;
     } else {
@@ -251,36 +254,47 @@ function chartsSearchByCountry(divName) {
 }
 
 function serveResultsTable(data, divName) {
-    var table = "<table><tr> <th>Song</th> <th>Artist</th> <th>Album</th> <th>Lyrics</th> <th>Save</th> </tr>"
-    for (i = 0; i < data.length; i++) {
+    if (data === undefined || data.length == 0) {
+        var table = "<p>No Results Found</p>"
+    } else {
+        var table = "<table><tr> <th>Song</th> <th>Artist</th> <th>Album</th> <th>Play</th> <th>Lyrics</th> <th>Save</th> </tr>"
+        for (i = 0; i < data.length; i++) {
 
-        table +=
-            "<tr " + "id=" + data[i].track.track_id + ">" + "<td>" + data[i].track.track_name + "</td>" +
-            "<td>" + data[i].track.artist_name + "</td>" +
-            "<td>" + data[i].track.album_name + "</td>" +
-            "<td>" + "<button class = 'lyrics'" + " onclick = getLyrics(this.parentElement.parentElement.id)" + ">" + "♪" + "</button>" + "</td>" +
-            "<td>" + "<button class = 'add' id = b_" + divName + i + " onclick = addToLibrary(this.parentNode.parentNode,this.id)" + ">" + "+" + "</button>" + "</td>";
-    };
-    table += "</table>";
-    console.log(table)
+            table +=
+                "<tr " + "id=" + data[i].track.track_id + ">" + "<td>" + data[i].track.track_name + "</td>" +
+                "<td>" + data[i].track.artist_name + "</td>" +
+                "<td>" + data[i].track.album_name + "</td>" +
+                "<td>" + "<button class = 'play'" + " onclick = getVideo(this,'search')" + ">" + "▶" + "</button>" + "</td>" +
+                "<td>" + "<button class = 'lyrics'" + " onclick = getLyrics(this.parentElement.parentElement.id)" + ">" + "♪" + "</button>" + "</td>" +
+                "<td>" + "<button class = 'add' id = b_" + divName + i + " onclick = addToLibrary(this.parentNode.parentNode,this.id)" + ">" + "+" + "</button>" + "</td>";
+        };
+        table += "</table>";
+        console.log(table)
+    }
     document.getElementById(divName).innerHTML = table
 }
 
 function serveSongResultsTable(artist, data, divName) {
     var title = "<h4>Top tracks by \"" + artist.innerHTML + "\"</h4>"
-    var table = "<table><tr> <th>Rank</th> <th>Song</th> <th>Artist</th> <th>Album</th> <th>Lyrics</th> <th>Save</th> </tr>"
-    for (i = 0; i < data.length; i++) {
-        table +=
-            "<tr " + "id=" + data[i].track.track_id + ">" +
-            "<td class = 'rank'> <b>" + (i + 1) + ".</b> </td>" +
-            "<td>" + data[i].track.track_name + "</td>" +
-            "<td>" + data[i].track.artist_name + "</td>" +
-            "<td>" + data[i].track.album_name + "</td>" +
-            "<td>" + "<button class = 'lyrics'" + " onclick = getLyrics(this.parentElement.parentElement.id)" + ">" + "♪" + "</button>" + "</td>" +
-            "<td>" + "<button class = 'add' id = b_" + divName + i + " onclick = addToLibrary(this.parentNode.parentNode,this.id)" + ">" + "+" + "</button>" + "</td>";
-    };
-    table += "</table>";
-    console.log(table)
+    if (data === undefined || data == 0) {
+        var table = "<p>No Results Found</p>"
+    } else {
+        var table = "<table><tr> <th>Rank</th> <th>Song</th> <th>Artist</th> <th>Album</th> <th>Play</th> <th>Lyrics</th> <th>Save</th> </tr>"
+        for (i = 0; i < data.length; i++) {
+            table +=
+                "<tr " + "id=" + data[i].track.track_id + ">" +
+                "<td class = 'rank'> <b>" + (i + 1) + ".</b> </td>" +
+                "<td>" + data[i].track.track_name + "</td>" +
+                "<td>" + data[i].track.artist_name + "</td>" +
+                "<td>" + data[i].track.album_name + "</td>" +
+                "<td>" + "<button class = 'play'" + " onclick = getVideo(this,'explore')" + ">" + "▶" + "</button>" + "</td>" +
+                "<td>" + "<button class = 'lyrics'" + " onclick = getLyrics(this.parentElement.parentElement.id)" + ">" + "♪" + "</button>" + "</td>" +
+                "<td>" + "<button class = 'add' id = b_" + divName + i + " onclick = addToLibrary(this.parentNode.parentNode,this.id)" + ">" + "+" + "</button>" + "</td>";
+
+        };
+        table += "</table>";
+        console.log(table)
+    }
     document.getElementById(divName).innerHTML = title + table
 }
 
@@ -338,11 +352,52 @@ function getLyrics(id) {
             if (data.message.body === undefined || data.message.body.length == 0) {
                 lyrics = "<p> Lyrics not found for the selected song. </p>"
             } else {
-                lyrics = ("<p>" + data.message.body.lyrics.lyrics_body + "</p>")
+                lyrics = ("<PRE>" + data.message.body.lyrics.lyrics_body + "</PRE>")
             }
-            displayModal(lyrics)
+            displayModal(lyrics, 'myModal')
         }
     })
+}
+
+function getVideo(elem, type) {
+    var song = elem.parentNode.parentNode;
+    // var addToLib = undefined;
+    // if (song.childNodes[5] != 'deleteCell') {
+    //     addToLib = "<button onclick='addToLibrary(song,this.id)'>Add to Library</button>"
+    // }
+    if (type == 'explore') {
+        var query = song.childNodes[1].innerHTML + " " + elem.parentNode.parentNode.childNodes[2].innerHTML
+    } else {
+        var query = song.childNodes[0].innerHTML + " " + elem.parentNode.parentNode.childNodes[1].innerHTML
+    }
+    console.log(query)
+    $.ajax({
+        type: 'GET',
+        url: 'https://www.googleapis.com/youtube/v3/search',
+        data: {
+            key: 'AIzaSyDlxpiKwKZrTNbXo18Hu1FWbNiM43gMjG8',
+            q: query + ' song',
+            part: 'snippet',
+            maxResults: 1,
+            type: 'video',
+            videoEmbeddable: true,
+        },
+        success: function (data) {
+            embedVideo(data)
+        },
+        error: function (response) {
+            console.log("Request Failed");
+        }
+    });
+}
+
+function embedVideo(data) {
+    // $('iframe').attr('src', 'https://www.youtube.com/embed/' + data.items[0].id.videoId)
+    // $('h3').text(data.items[0].snippet.title)
+    // $('.description').text(data.items[0].snippet.description)
+
+    var video = 'https://www.youtube.com/embed/' + data.items[0].id.videoId
+    displayVideo(video, 'videoModal')
 }
 
 function makeVisible(elmnt) {
@@ -353,11 +408,43 @@ function makeInvisible(elmnt) {
     x = document.getElementById(elmnt).style.visibility = 'hidden'
 }
 
-function displayModal(lyrics) {
+function displayVideo(data, modalName) {
+    document.getElementsByClassName('expand')[0].style.visibility = 'hidden'
     // Get the modal
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById(modalName);
 
-    document.getElementsByClassName("modal-body")[0].innerHTML = lyrics
+    if (data === undefined) {
+    } else {
+        document.getElementById(modalName).childNodes[3].childNodes[3].innerHTML = "<iframe align='center' width='560' height='385' src=" + data + "></iframe>";
+    }
+    modal.style.display = "block";
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[1];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+        document.getElementsByClassName('expand')[0].style.visibility = 'visible'
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            document.getElementsByClassName('expand')[0].style.visibility = 'visible'
+        }
+    }
+}
+
+function showPlayer() {
+    displayVideo(undefined, 'videoModal')
+}
+
+function displayModal(data, modalName) {
+    // Get the modal
+    var modal = document.getElementById(modalName);
+    document.getElementById(modalName).childNodes[3].childNodes[3].innerHTML = data
     modal.style.display = "block";
 
     // Get the <span> element that closes the modal
@@ -396,5 +483,6 @@ window.addEventListener('load', function () {
     document.getElementById("defaultOpen").click();
     document.getElementsByClassName('searchButton')[1].click();
     document.getElementById('SearchBox').focus();
+    document.getElementsByClassName('expand')[0].style.visibility = 'hidden'
     enterToSearch()
 })

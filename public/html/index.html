@@ -11,6 +11,7 @@
     <button class="tablink" onclick="openPage('Search', this, 'darkorange')" id="defaultOpen">Search</button>
     <button class="tablink" onclick="openPage('Library', this, 'darkslategrey')">Library</button>
     <button class="tablink" onclick="openPage('Explore', this, 'darkmagenta')">Explore</button>
+    <button class="expand" onclick="showPlayer()">Player</button>
 
     <div id="Search" class="tabcontent">
         <h1>Search</h1>
@@ -97,7 +98,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Song lyrics</h2>
+                <h2>Song Lyrics</h2>
             </div>
             <div class="modal-body">
             </div>
@@ -108,7 +109,18 @@
 
     </div>
 
+    <div id="videoModal" class="modal">
 
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: red;">
+                <span class="close">&times;</span>
+                <h2>Song Video</h2>
+            </div>
+            <div class="modal-body" style="text-align: center; color: white; margin-top: 20px; margin-bottom: 20px;">
+            </div>
+        </div>
+    </div>
 
 </body>
 
