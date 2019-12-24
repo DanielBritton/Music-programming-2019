@@ -1,3 +1,10 @@
+/**
+ * @description Hide all tabs, Make the required tab visible,
+ *              and set the background color.  
+ * @param {id} pageName 
+ * @param {HTMLDivElement} elmnt 
+ * @param {String} color 
+ */
 function openPage(pageName, elmnt, color) {
     // Hide all elements with class="tabcontent" by default */
     var i, tabcontent, tablinks;
@@ -22,58 +29,88 @@ function openPage(pageName, elmnt, color) {
     }
 }
 
+/**
+ * @description Take a HTML row element and save it to library. 
+ * @param {HTMLTableRowElement} row 
+ */
 function saveSong(row) {
+    // If a library doesn't exist, create one using the row element as the first item.
+    // Use localStorage to assign the String storage to an item called 'library'. 
     if (localStorage.getItem('library') === null) {
         var storage = [row];
         localStorage.setItem('library', JSON.stringify(storage))
         console.log('Creating new library...')
     } else {
-        var library = JSON.parse(localStorage.getItem('library'))
+        var library = loadSongs()
+        // The library should not contain duplicate songs. 
         if (!library.includes(row)) {
             library.push(row)
             localStorage.setItem('library', JSON.stringify(library));
+            console.log("Adding Song: " + row)
         } else {
             console.log("Library already contains selected song")
         }
     }
 }
 
+/**
+ * @description Delete the song at index in the library 
+ * @param {Int} index 
+ */
 function deleteSong(index) {
     var local = loadSongs()
     local.splice(index - 1, 1);
     localStorage.setItem('library', JSON.stringify(local))
     console.log("Item Deleted: " + localStorage.getItem('library'))
+    // Refresh the library display
     displayLibrary()
 }
 
+/**
+ * @description Return Array of songs from localStorage 'library' 
+ * @returns Array
+ */
 function loadSongs() {
     return JSON.parse(localStorage.getItem('library'))
 }
 
+/**
+ * @description Add song to the library and hide the 'add' button. 
+ * @param {HTMLTableRowElement} song 
+ * @param {id} id 
+ */
 function addToLibrary(song, id) {
     var addAction = document.getElementById(id).parentElement
+    //Replaces the 'add' button with a 'delete' button for the library
     addAction.className = 'deleteCell'
     document.getElementById(id).remove()
+    var lsong = song.cloneNode(true)
+    // If song is in the Explore page, remove the 'rank' <td> element 
     if (song.childNodes[0].className == 'rank') {
-        song = song.cloneNode(true)
-        song.childNodes[0].remove()
+        lsong.childNodes[4].childNodes[0].setAttribute('onclick', "getVideo(this,'library')")
+        lsong.childNodes[0].remove()
     }
-    saveSong(song.outerHTML)
+    saveSong(lsong.outerHTML)
     addAction.removeAttribute('class')
-    console.log("Adding Song: " + song.outerHTML)
 }
 
+/**
+ * @description Display the library table in the 'Library' tab
+ */
 function displayLibrary() {
-    var header = "<tr><th>Song</th><th>Artist</th><th>Album</th><th>Play</th><th>Lyrics</th><th>Delete</th></tr>"
+    var header = "<tr> <th>Song</th> <th>Artist</th> <th>Album</th> <th>Play</th> <th>Lyrics</th> <th>Delete</th> </tr>"
+    // Load the Array into Array local
     if (loadSongs() === null) {
         var local = null;
     } else {
         var local = loadSongs().join('')
     }
+    // Display an empty message or the users library
     if (local === null || local == []) {
         document.getElementById('displayLib').innerHTML = "<br/><br/><h4>You haven't saved any songs yet...</h4><br/><br/>"
     } else {
         document.getElementById('displayLib').innerHTML = header + local
+        // Populate the library table with delete buttons
         deleteButtons = document.getElementsByClassName('deleteCell')
         for (i = 0; i < deleteButtons.length; i++) {
             deleteButtons[i].innerHTML = "<button class = 'deleteButton' onclick = 'deleteSong(this.parentNode.parentNode.rowIndex)'>X</button>"
@@ -81,24 +118,29 @@ function displayLibrary() {
     }
 }
 
+/**
+ * @description Verify that the user has entered a valid search and if so run Search 
+ */
 function validateSearch() {
     inputVal = document.getElementById("SearchBox").value
     if (inputVal.length == 0) {
+        // Show an error message if the user hasn't entered anything
         makeVisible('error')
     } else {
         makeInvisible('error')
-        // document.getElementById('trackResults').innerHTML += ("<p>Songs like " + inputVal + "</p>")
-        // document.getElementById('artistResults').innerHTML += ("<p>Artists like " + inputVal +"</p>")
-
+        // Set the header and run the track search
         document.getElementById('trackHeader').innerHTML = ("<p>Songs like " + "\"" + inputVal + "\"" + "</p>")
-        document.getElementById('artistHeader').innerHTML = ("<p>Songs by Artists like " + "\"" + inputVal + "\"" + "</p>")
-
         searchByTrackName(inputVal);
+        // Set the header and run the artist search
+        document.getElementById('artistHeader').innerHTML = ("<p>Songs by Artists like " + "\"" + inputVal + "\"" + "</p>")
         searchByArtistName(inputVal);
-        // artistRanking(inputVal)
     }
 }
 
+/**
+ * @description Search for songs by Artist name
+ * @param {String} query 
+ */
 function searchByArtistName(query) {
     var divName = "artistResults"
     $.ajax({
@@ -122,6 +164,10 @@ function searchByArtistName(query) {
     })
 }
 
+/**
+ * @description Search for songs by Track name
+ * @param {String} query
+ */
 function searchByTrackName(query) {
     var divName = "trackResults"
     $.ajax({
@@ -145,52 +191,11 @@ function searchByTrackName(query) {
     })
 }
 
-function lyricsSearch(query) {
-    var divName = ""
-    $.ajax({
-        type: "GET",
-        data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
-            q: query,
-            s_track_rating: "DESC",
-            s_artist_rating: "DESC",
-            format: "jsonp",
-            callback: "jsonp_callback"
-        },
-        url: "https://api.musixmatch.com/ws/1.1/lyrics.search",
-        dataType: "jsonp",
-        jsonpCallback: 'jsonp_callback',
-        success: function (data) {
-            data = data.message.body.track_list
-            serveResultsTable(data, divName)
-            document.getElementById('searchResults').style.visibility = 'visible'
-        }
-    })
-}
-
-function generalQuery(query) {
-    var divName = ""
-    $.ajax({
-        type: "GET",
-        data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
-            q: query,
-            s_track_rating: "DESC",
-            s_artist_rating: "DESC",
-            format: "jsonp",
-            callback: "jsonp_callback"
-        },
-        url: "https://api.musixmatch.com/ws/1.1/track.search",
-        dataType: "jsonp",
-        jsonpCallback: 'jsonp_callback',
-        success: function (data) {
-            data = data.message.body.track_list
-            serveResultsTable(data, divName)
-            document.getElementById('searchResults').style.visibility = 'visible'
-        }
-    })
-}
-
+/**
+ * @description Query Artist songs by charts and country
+ * @param {String} countryValue 
+ * @param {id} divName 
+ */
 function artistChartsByCountry(countryValue, divName) {
     $.ajax({
         type: "GET",
@@ -215,6 +220,11 @@ function artistChartsByCountry(countryValue, divName) {
     })
 }
 
+/**
+ * @description Query tracks by charts and country
+ * @param {String} countryValue
+ * @param {id} divName
+ */
 function trackChartsByCountry(countryValue, divName) {
     $.ajax({
         type: "GET",
@@ -231,12 +241,16 @@ function trackChartsByCountry(countryValue, divName) {
         jsonpCallback: 'jsonp_callback',
         success: function (data) {
             data = data.message.body.track_list
-            serveResultsTable(data, divName)
+            serveTrackResultsTable('', data, divName)
             document.getElementById(divName).style.visibility = 'visible'
         }
     })
 }
 
+/**
+ * @description Get Explore page selector values and call the required search function 
+ * @param {id} divName 
+ */
 function chartsSearchByCountry(divName) {
     document.getElementById('exploreSongs').style.visibility = 'hidden'
     var country = document.getElementById('countrySelector')
@@ -253,6 +267,11 @@ function chartsSearchByCountry(divName) {
     }
 }
 
+/**
+ * @description Constructs a table containing search results and places it in the required div
+ * @param {JSON} data 
+ * @param {id} divName 
+ */
 function serveResultsTable(data, divName) {
     if (data === undefined || data.length == 0) {
         var table = "<p>No Results Found</p>"
@@ -274,8 +293,20 @@ function serveResultsTable(data, divName) {
     document.getElementById(divName).innerHTML = table
 }
 
-function serveSongResultsTable(artist, data, divName) {
-    var title = "<h4>Top tracks by \"" + artist.innerHTML + "\"</h4>"
+/**
+ * @description 
+ * @param {String} artist 
+ * @param {JSON} data 
+ * @param {id} divName 
+ */
+function serveTrackResultsTable(artist, data, divName) {
+    if (artist !== undefined && artist.length != 0) {
+        var title = "<h4>Top tracks by \"" + artist.innerHTML + "\"</h4>"
+    } else {
+        var country = document.getElementById('countrySelector')
+        var countryValue = country.options[country.selectedIndex].innerHTML
+        var title = "<h4>Top tracks in " + countryValue + "</h4>"
+    }
     if (data === undefined || data == 0) {
         var table = "<p>No Results Found</p>"
     } else {
@@ -298,6 +329,11 @@ function serveSongResultsTable(artist, data, divName) {
     document.getElementById(divName).innerHTML = title + table
 }
 
+/**
+ * @description Display Artist charts data
+ * @param {JSON} data 
+ * @param {id} divName 
+ */
 function serveArtistResultsTable(data, divName) {
     var table = "<table><tr> <th><b>Rank</b></th> <th><b>Artist</b></th> <th>Songs</th> </tr>"
     for (i = 0; i < data.length; i++) {
@@ -309,6 +345,12 @@ function serveArtistResultsTable(data, divName) {
     document.getElementById(divName).innerHTML = table
 }
 
+/**
+ * @description Expand a list of songs by the selected artist
+ * @param {String} id 
+ * @param {String} artist 
+ * @param {id} divName 
+ */
 function expandSongs(id, artist, divName) {
     $.ajax({
         type: "GET",
@@ -326,12 +368,16 @@ function expandSongs(id, artist, divName) {
         success: function (data) {
             console.log(data)
             data = data.message.body.track_list
-            serveSongResultsTable(artist, data, divName)
+            serveTrackResultsTable(artist, data, divName)
             document.getElementById(divName).style.visibility = 'visible'
         }
     })
 }
 
+/**
+ * @description Fetches song lyrics using id
+ * @param {id} id 
+ */
 function getLyrics(id) {
     console.log('Gettting lyrics for ' + id)
     $.ajax({
@@ -354,11 +400,16 @@ function getLyrics(id) {
             } else {
                 lyrics = ("<PRE>" + data.message.body.lyrics.lyrics_body + "</PRE>")
             }
-            displayModal(lyrics, 'myModal')
+            displayLyrics(lyrics, 'lyricsModal')
         }
     })
 }
 
+/**
+ * @description Construct and run a query to fetch the YouTube video for the selected song.
+ * @param {HTMLButtonElement} elem 
+ * @param {String} type 
+ */
 function getVideo(elem, type) {
     var song = elem.parentNode.parentNode;
     // var addToLib = undefined;
@@ -391,31 +442,49 @@ function getVideo(elem, type) {
     });
 }
 
+/**
+ * 
+ * @description Constructs a YouTube embedded URL and passes it to the displayModal function
+ * @param {JSON} data
+ */
 function embedVideo(data) {
-    // $('iframe').attr('src', 'https://www.youtube.com/embed/' + data.items[0].id.videoId)
-    // $('h3').text(data.items[0].snippet.title)
-    // $('.description').text(data.items[0].snippet.description)
-
     var video = 'https://www.youtube.com/embed/' + data.items[0].id.videoId
     displayVideo(video, 'videoModal')
 }
 
+/**
+ *
+ * @description Takes a HTML element and sets it's visibility to 'visible'
+ * @param {HTMLDivElement} elmnt
+ */
 function makeVisible(elmnt) {
     document.getElementById(elmnt).style.visibility = 'visible'
 }
 
+/**
+ * 
+ * @description Takes a HTML element and sets it's visibility to 'hidden'
+ * @param {HTMLDivElement} elmnt 
+ */
 function makeInvisible(elmnt) {
     x = document.getElementById(elmnt).style.visibility = 'hidden'
 }
 
+/**
+ * 
+ * @description Takes an iFrame and modalName and places the iFrame in the 
+ *              required modal. The modal view is also controlled by this function. 
+ * @param {HTMLIFrameElement} data 
+ * @param {id} modalName 
+ */
 function displayVideo(data, modalName) {
-    document.getElementsByClassName('expand')[0].style.visibility = 'hidden'
+    document.getElementsByClassName('showPlayer')[0].style.visibility = 'hidden'
     // Get the modal
     var modal = document.getElementById(modalName);
 
     if (data === undefined) {
     } else {
-        document.getElementById(modalName).childNodes[3].childNodes[3].innerHTML = "<iframe align='center' width='560' height='385' src=" + data + "></iframe>";
+        document.getElementById(modalName).childNodes[1].childNodes[3].innerHTML = "<iframe align='center' width='560' height='385' src=" + data + "></iframe>";
     }
     modal.style.display = "block";
 
@@ -425,26 +494,35 @@ function displayVideo(data, modalName) {
     // When the user clicks on <span> (x), close the modal
     span.onclick = function () {
         modal.style.display = "none";
-        document.getElementsByClassName('expand')[0].style.visibility = 'visible'
+        document.getElementsByClassName('showPlayer')[0].style.visibility = 'visible'
     }
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
-            document.getElementsByClassName('expand')[0].style.visibility = 'visible'
+            document.getElementsByClassName('showPlayer')[0].style.visibility = 'visible'
         }
     }
 }
 
+/**
+ * @description Shows the player modal.
+ */
 function showPlayer() {
     displayVideo(undefined, 'videoModal')
 }
 
-function displayModal(data, modalName) {
+/**
+ * 
+ * @description Displays the selected song lyrics in a modal box. 
+ * @param {String} data 
+ * @param {id} modalName
+ */
+function displayLyrics(data, modalName) {
     // Get the modal
     var modal = document.getElementById(modalName);
-    document.getElementById(modalName).childNodes[3].childNodes[3].innerHTML = data
+    document.getElementById(modalName).childNodes[1].childNodes[3].innerHTML = data
     modal.style.display = "block";
 
     // Get the <span> element that closes the modal
@@ -463,26 +541,35 @@ function displayModal(data, modalName) {
     }
 }
 
+/**
+ * 
+ * @description Listen for the 'enter' key being pressed and click search if it is.
+ */
 function enterToSearch() {
     var input = document.getElementById("SearchBox");
-
     // Execute a function when the user releases a key on the keyboard
     input.addEventListener("keyup", function (event) {
         // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
             // Cancel the default action, if needed
             event.preventDefault();
-            // Trigger the button element with a click
+            // Trigger the search button element with a click
             document.getElementsByClassName("searchButton")[0].click();
         }
     });
 }
 
-// Get the element with id="defaultOpen" and click on it
+/**
+ * @description Once the page has loaded, click the default page tab,
+ *              Run the Explore page search so that the page is populated,
+ *              Select the search box as the page focus and
+ *              Hide the Player icon.
+ *              Also run the enterToSearch() function to listen for the enter key and run the search.
+ */
 window.addEventListener('load', function () {
     document.getElementById("defaultOpen").click();
     document.getElementsByClassName('searchButton')[1].click();
     document.getElementById('SearchBox').focus();
-    document.getElementsByClassName('expand')[0].style.visibility = 'hidden'
+    document.getElementsByClassName('showPlayer')[0].style.visibility = 'hidden'
     enterToSearch()
 })

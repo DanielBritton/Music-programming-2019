@@ -8,11 +8,15 @@
 </head>
 
 <body>
+    <!-- Tab buttons -->
     <button class="tablink" onclick="openPage('Search', this, 'darkorange')" id="defaultOpen">Search</button>
     <button class="tablink" onclick="openPage('Library', this, 'darkslategrey')">Library</button>
     <button class="tablink" onclick="openPage('Explore', this, 'darkmagenta')">Explore</button>
-    <button class="expand" onclick="showPlayer()">Player</button>
 
+    <!-- Show Player button -->
+    <button class="showPlayer" onclick="showPlayer()">Player</button>
+
+    <!-- Search Tab -->
     <div id="Search" class="tabcontent">
         <h1>Search</h1>
         <div class="display">
@@ -42,6 +46,7 @@
         </div>
     </div>
 
+    <!-- Library Tab -->
     <div id="Library" class="tabcontent">
         <h1>Library</h1>
         <div class='display'>
@@ -51,6 +56,7 @@
         </div>
     </div>
 
+    <!-- Explore Tab -->
     <div id="Explore" class="tabcontent">
         <h1>Explore</h1>
         <div>
@@ -83,7 +89,6 @@
                     <div id="exploreResults">
                         <h3>Results</h3>
                         <div id="exploreRes"></div>
-                        <!-- <div id="exploreResTitle"></div> -->
                         <div id="exploreSongs"></div>
                     </div>
 
@@ -92,9 +97,7 @@
         </div>
     </div>
 
-    <div id="myModal" class="modal">
-
-        <!-- Modal content -->
+    <div id="lyricsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
@@ -102,16 +105,10 @@
             </div>
             <div class="modal-body">
             </div>
-            <!-- <div class="modal-footer">
-                <h3>Modal Footer</h3>
-            </div> -->
         </div>
-
     </div>
 
     <div id="videoModal" class="modal">
-
-        <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header" style="background-color: red;">
                 <span class="close">&times;</span>

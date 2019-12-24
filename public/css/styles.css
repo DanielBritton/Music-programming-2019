@@ -31,6 +31,7 @@ html,body {
   padding: 100px 20px;
 }
 
+/* Table Styles  */
 th, td {
   background-color: rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid #ddd;
@@ -42,6 +43,15 @@ th {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+/* Default text display class */
+.display {
+  color: black;
+  background-color: rgba(255,255,255,0.5);
+  font-size: 16;
+  padding: 20px;
+}
+
+/* Add Button Styles */
 .add{
   background-color: rgba(47, 79, 79, 0.9);
   color: white;
@@ -52,6 +62,7 @@ th {
 
 .add:hover {background-color: rgba(0, 0, 0, 0.7);}
 
+/* Lyrics Button Styles */
 .lyrics{
   background-color: rgba(47, 79, 79, 0.9);
   color: white;
@@ -62,6 +73,7 @@ th {
 
 .lyrics:hover {background-color: rgba(0, 0, 0, 0.7);}
 
+/* Play Button Styles */
 .play{
   background-color: rgba(47, 79, 79, 0.9);
   color: white;
@@ -72,33 +84,7 @@ th {
 
 .play:hover {background-color: rgba(0, 0, 0, 0.7);}
 
-.expandSongs{
-  background-color: rgba(47, 79, 79, 0.9);
-  color: white;
-  border: 2px solid #e7e7e7;
-  display: block;
-  margin: auto;
-}
-
-.expandSongs:hover {background-color: rgba(0, 0, 0, 0.7);}
-
-
-.display {
-  color: black;
-  background-color: rgba(255,255,255,0.5);
-  font-size: 16;
-  padding: 20px;
-}
-
-.error {
-  color: red;
-  font-size: 12;
-  font-style: oblique;
-  padding-left: 50px;
-  padding-bottom: 10px;
-  visibility: hidden;
-}
-
+/* Delete Button Styles */
 .deleteButton {
   background-color: rgba(58, 49, 190, 0.9);
   color: white;
@@ -109,6 +95,18 @@ th {
 
 .deleteButton:hover {background-color: rgba(255, 0, 0, 0.7);}
 
+/* Expand Artist Songs Button Styles */
+.expandSongs{
+  background-color: rgba(47, 79, 79, 0.9);
+  color: white;
+  border: 2px solid #e7e7e7;
+  display: block;
+  margin: auto;
+}
+
+.expandSongs:hover {background-color: rgba(0, 0, 0, 0.7);}
+
+/* Search Button Style */
 .searchButton {
   background-color: rgba(155, 148, 148, 0.4);
   color: white;
@@ -121,7 +119,17 @@ th {
 
 .searchButton:hover {background-color: rgba(228, 179, 44, 0.7);}
 
-.expand{
+/* Search Error Message */
+.error {
+  color: red;
+  font-size: 12;
+  font-style: oblique;
+  padding-left: 50px;
+  padding-bottom: 10px;
+  visibility: hidden;
+}
+
+.showPlayer{
   padding: 10px;
   background-color: rgba(33, 207, 42, 0.5);
   color: white; 
@@ -134,9 +142,9 @@ th {
 	animation: pulse 2s infinite;
 }
 
-.expand:hover {background-color: rgba(33, 207, 42, 0.7);}
+.showPlayer:hover {background-color: rgba(33, 207, 42, 0.7);}
 
-
+/* Animation for showPlayer Button */
 @keyframes pulse {
 	0% {
 		transform: scale(0.95);
@@ -154,26 +162,22 @@ th {
 	}
 }
 
-
-
-
-
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  display: none;
+  position: fixed; 
+  z-index: 1; 
+  padding-top: 100px; 
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
+  width: 100%; 
+  height: 100%; 
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
 }
 
-/* Modal Content */
+/* Modal Content Styles */
 .modal-content {
   position: relative;
   background-color: rgba(0, 0, 0, 0.85);
@@ -189,7 +193,7 @@ th {
   animation-duration: 0.4s
 }
 
-/* Add Animation */
+/* Modal Animation */
 @-webkit-keyframes animatetop {
   from {top:-300px; opacity:0} 
   to {top:0; opacity:1}
@@ -200,7 +204,7 @@ th {
   to {top:0; opacity:1}
 }
 
-/* The Close Button */
+/* Close Button Styles */
 .close {
   color: white;
   float: right;
@@ -215,34 +219,29 @@ th {
   cursor: pointer;
 }
 
+/* Modal Header Styles  */
 .modal-header {
   padding: 2px 16px;
   background-color: #5cb85c;
   color: white;
 }
 
+/* Modal Body Styles */
 .modal-body {padding: 2px 16px;}
 
-.modal-footer {
+/* .modal-footer {
   padding: 2px 16px;
   background-color: #5cb85c;
   color: white;
-}
+} */
 
-
+/* Search Tab Styles */
 #searchResults{
   background-color: rgba(47, 79, 79, 0.7);
   color: white;
   padding: 40px;
   visibility: hidden;
   height: 100%; 
-}
-
-#libraryDisplay{
-  height: 100%;
-  background-color: rgba(23, 11, 94, 0.781);
-  color: white;
-  padding: 40px;
 }
 
 #SearchBox{
@@ -252,6 +251,19 @@ th {
     padding-left: 10px;
 }
 
+/* Library Tab Styles  */
+#libraryDisplay{
+  height: 100%;
+  background-color: rgba(23, 11, 94, 0.781);
+  color: white;
+  padding: 40px;
+}
+
+#displayLib{
+  min-width: 80%;
+}
+
+/* Explore Tab Styles  */
 #exploreDisplay{
   display: flex;
   height: 100%;
@@ -259,10 +271,6 @@ th {
   color: white;
   padding: 20px;
   padding-top: 40px;
-}
-
-#displayLib{
-  min-width: 80%;
 }
 
 #exploreResults{
@@ -292,13 +300,6 @@ th {
   max-width: 50%; 
 }
 
-#exploreResTitle{
-  display: none;
-  vertical-align: top;
-  visibility: hidden;
-  max-width: 50%; 
-}
-
 #selector{
   margin: 10px; 
   display: inline-block;
@@ -308,6 +309,7 @@ th {
   max-height: 350px;  
 }
 
+/* Tab Styles */
 #Search {
   background-color: red;
   background-image: url("images/guitar.jpg"); 
