@@ -1,6 +1,6 @@
 /**
  * @description Hide all tabs, Make the required tab visible,
- *              and set the background color.  
+ *              and set the background color.
  * @param {id} pageName 
  * @param {HTMLDivElement} elmnt 
  * @param {String} color 
@@ -30,7 +30,7 @@ function openPage(pageName, elmnt, color) {
 }
 
 /**
- * @description Take a HTML row element and save it to library. 
+ * @description Take a HTML row element and save it to library.
  * @param {HTMLTableRowElement} row 
  */
 function saveSong(row) {
@@ -54,7 +54,7 @@ function saveSong(row) {
 }
 
 /**
- * @description Delete the song at index in the library 
+ * @description Delete the song at index in the library
  * @param {Int} index 
  */
 function deleteSong(index) {
@@ -67,7 +67,7 @@ function deleteSong(index) {
 }
 
 /**
- * @description Return Array of songs from localStorage 'library' 
+ * @description Return Array of songs from localStorage 'library'
  * @returns Array
  */
 function loadSongs() {
@@ -75,9 +75,9 @@ function loadSongs() {
 }
 
 /**
- * @description Add song to the library and hide the 'add' button. 
- * @param {HTMLTableRowElement} song 
- * @param {id} id 
+ * @description Add song to the library and hide the 'add' button.
+ * @param {HTMLTableRowElement} song
+ * @param {id} id
  */
 function addToLibrary(song, id) {
     var addAction = document.getElementById(id).parentElement
@@ -86,7 +86,7 @@ function addToLibrary(song, id) {
     document.getElementById(id).remove()
     var lsong = song.cloneNode(true)
     // If song is in the Explore page, remove the 'rank' <td> element 
-    if (song.childNodes[0].className == 'rank') {
+    if (lsong.childNodes[0].className == 'rank') {
         lsong.childNodes[4].childNodes[0].setAttribute('onclick', "getVideo(this,'library')")
         lsong.childNodes[0].remove()
     }
@@ -119,7 +119,7 @@ function displayLibrary() {
 }
 
 /**
- * @description Verify that the user has entered a valid search and if so run Search 
+ * @description Verify that the user has entered a valid search and if so run Search
  */
 function validateSearch() {
     inputVal = document.getElementById("SearchBox").value
@@ -176,7 +176,6 @@ function searchByTrackName(query) {
             apikey: "802224f7ee4779fbc74a6ebaf2347221",
             q_track: query,
             s_artist_rating: "DESC",
-            //s_track_rating: "DESC",
             format: "jsonp",
             callback: "jsonp_callback"
         },
@@ -248,7 +247,8 @@ function trackChartsByCountry(countryValue, divName) {
 }
 
 /**
- * @description Get Explore page selector values and call the required search function 
+ * @description Get Explore page selector values and call the required search
+ *              function
  * @param {id} divName 
  */
 function chartsSearchByCountry(divName) {
@@ -268,7 +268,8 @@ function chartsSearchByCountry(divName) {
 }
 
 /**
- * @description Constructs a table containing search results and places it in the required div
+ * @description Constructs a table containing search results and places
+ *              it in the required div.
  * @param {JSON} data 
  * @param {id} divName 
  */
@@ -278,7 +279,6 @@ function serveResultsTable(data, divName) {
     } else {
         var table = "<table><tr> <th>Song</th> <th>Artist</th> <th>Album</th> <th>Play</th> <th>Lyrics</th> <th>Save</th> </tr>"
         for (i = 0; i < data.length; i++) {
-
             table +=
                 "<tr " + "id=" + data[i].track.track_id + ">" + "<td>" + data[i].track.track_name + "</td>" +
                 "<td>" + data[i].track.artist_name + "</td>" +
@@ -347,9 +347,9 @@ function serveArtistResultsTable(data, divName) {
 
 /**
  * @description Expand a list of songs by the selected artist
- * @param {String} id 
- * @param {String} artist 
- * @param {id} divName 
+ * @param {String} id
+ * @param {String} artist
+ * @param {id} divName
  */
 function expandSongs(id, artist, divName) {
     $.ajax({
@@ -398,7 +398,9 @@ function getLyrics(id) {
             if (data.message.body === undefined || data.message.body.length == 0) {
                 lyrics = "<p> Lyrics not found for the selected song. </p>"
             } else {
-                lyrics = ("<PRE>" + data.message.body.lyrics.lyrics_body + "</PRE>")
+                var lyr = data.message.body.lyrics.lyrics_body
+                lyr = lyr.substring(0, lyr.indexOf('***'))
+                lyrics = ("<pre>" + lyr + "</pre>")
             }
             displayLyrics(lyrics, 'lyricsModal')
         }
@@ -406,7 +408,8 @@ function getLyrics(id) {
 }
 
 /**
- * @description Construct and run a query to fetch the YouTube video for the selected song.
+ * @description Construct and run a query to fetch the YouTube video for the
+ *              selected song.
  * @param {HTMLButtonElement} elem 
  * @param {String} type 
  */
@@ -443,8 +446,8 @@ function getVideo(elem, type) {
 }
 
 /**
- * 
- * @description Constructs a YouTube embedded URL and passes it to the displayModal function
+ * @description Constructs a YouTube embedded URL and passes it to the
+ *              displayModal function
  * @param {JSON} data
  */
 function embedVideo(data) {
@@ -453,16 +456,14 @@ function embedVideo(data) {
 }
 
 /**
- *
  * @description Takes a HTML element and sets it's visibility to 'visible'
- * @param {HTMLDivElement} elmnt
+ * @param {id} elmnt
  */
 function makeVisible(elmnt) {
     document.getElementById(elmnt).style.visibility = 'visible'
 }
 
 /**
- * 
  * @description Takes a HTML element and sets it's visibility to 'hidden'
  * @param {HTMLDivElement} elmnt 
  */
@@ -471,9 +472,8 @@ function makeInvisible(elmnt) {
 }
 
 /**
- * 
- * @description Takes an iFrame and modalName and places the iFrame in the 
- *              required modal. The modal view is also controlled by this function. 
+ * @description Takes an iFrame and modalName and places the iFrame in the
+ *              required modal. The modal view is also controlled by this function.
  * @param {HTMLIFrameElement} data 
  * @param {id} modalName 
  */
@@ -514,8 +514,7 @@ function showPlayer() {
 }
 
 /**
- * 
- * @description Displays the selected song lyrics in a modal box. 
+ * @description Displays the selected song lyrics in a modal box.
  * @param {String} data 
  * @param {id} modalName
  */
@@ -542,8 +541,8 @@ function displayLyrics(data, modalName) {
 }
 
 /**
- * 
- * @description Listen for the 'enter' key being pressed and click search if it is.
+ * @description Listen for the 'enter' key being pressed and click search if
+ *              it is.
  */
 function enterToSearch() {
     var input = document.getElementById("SearchBox");
@@ -564,7 +563,8 @@ function enterToSearch() {
  *              Run the Explore page search so that the page is populated,
  *              Select the search box as the page focus and
  *              Hide the Player icon.
- *              Also run the enterToSearch() function to listen for the enter key and run the search.
+ *              Also run the enterToSearch() function to listen for the enter
+ *              key and run the search.
  */
 window.addEventListener('load', function () {
     document.getElementById("defaultOpen").click();
