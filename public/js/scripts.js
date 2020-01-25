@@ -563,7 +563,7 @@ function enterToSearch() {
  *              Run the Explore page search so that the page is populated,
  *              Select the search box as the page focus and
  *              Hide the Player icon.
- *              Also run the enterToSearch() function to listen for the enter
+ *              Run the enterToSearch() function to listen for the enter
  *              key and run the search.
  */
 window.addEventListener('load', function () {
