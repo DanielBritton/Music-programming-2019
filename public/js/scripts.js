@@ -1,3 +1,6 @@
+const musixmatch_api_key = 'YOUR-API-KEY';
+const youtube_api_key = 'YOUR-API-KEY'
+
 /**
  * @description Hide all tabs, Make the required tab visible,
  *              and set the background color.
@@ -146,7 +149,7 @@ function searchByArtistName(query) {
     $.ajax({
         type: "GET",
         data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
+            apikey: musixmatch_api_key,
             q_artist: query,
             s_track_rating: "DESC",
             s_artist_rating: "DESC",
@@ -173,7 +176,7 @@ function searchByTrackName(query) {
     $.ajax({
         type: "GET",
         data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
+            apikey: musixmatch_api_key,
             q_track: query,
             s_artist_rating: "DESC",
             format: "jsonp",
@@ -199,7 +202,7 @@ function artistChartsByCountry(countryValue, divName) {
     $.ajax({
         type: "GET",
         data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
+            apikey: musixmatch_api_key,
             //q_artist: query,
             country: countryValue,
             page_size: 25,
@@ -228,7 +231,7 @@ function trackChartsByCountry(countryValue, divName) {
     $.ajax({
         type: "GET",
         data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
+            apikey: musixmatch_api_key,
             //q_track: query,
             country: countryValue,
             page_size: 25,
@@ -355,7 +358,7 @@ function expandSongs(id, artist, divName) {
     $.ajax({
         type: "GET",
         data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
+            apikey: musixmatch_api_key,
             f_artist_id: id,
             s_track_rating: "DESC",
             page_size: 10,
@@ -383,7 +386,7 @@ function getLyrics(id) {
     $.ajax({
         type: "GET",
         data: {
-            apikey: "802224f7ee4779fbc74a6ebaf2347221",
+            apikey: musixmatch_api_key,
             track_id: id,
             format: "jsonp",
             callback: "jsonp_callback"
@@ -429,7 +432,7 @@ function getVideo(elem, type) {
         type: 'GET',
         url: 'https://www.googleapis.com/youtube/v3/search',
         data: {
-            key: 'AIzaSyDlxpiKwKZrTNbXo18Hu1FWbNiM43gMjG8',
+            key: youtube_api_key,
             q: query + ' song',
             part: 'snippet',
             maxResults: 1,
